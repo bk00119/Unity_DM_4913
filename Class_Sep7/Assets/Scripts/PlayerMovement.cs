@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     int jumpCount; // init: 0
     static int maxJumpCount = 2;
     bool onGround; // init: false
+    public int score;
 
     // Start is called before the first frame update
     void Start() {
@@ -47,6 +48,12 @@ public class PlayerMovement : MonoBehaviour {
         if (collision.gameObject.tag == "Ground") {
             onGround = true;
             jumpCount = 0;
+        }
+
+        if (collision.gameObject.tag == "Star") {
+            score++;
+            //Destroy(GetComponent<PolygonCollider2D>());
+            Destroy(collision.gameObject);
         }
 
     }
