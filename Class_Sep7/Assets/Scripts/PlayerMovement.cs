@@ -42,7 +42,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Enemy1") {
-            SceneManager.LoadScene(1); //0: the scene reloads --> from Build Settings, the number on the right of Scenes in Build
+            //SceneManager.LoadScene(1); //CHANGE THIS
+            SceneManager.LoadScene(2); //2: Game Over Scene
         }
 
         if (collision.gameObject.tag == "Ground") {

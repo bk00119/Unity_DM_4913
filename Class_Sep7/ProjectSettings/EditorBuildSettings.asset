@@ -5,10 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EndlessJumper.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/TitleMenu.unity
+    guid: d6f6c4220cc8b45589bebb563d977901
+  - enabled: 1
     path: Assets/Scenes/EndlessJumper 1.unity
     guid: 4d39c2921d8cd4a6190549dc5bcd93ee
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 1d02f4422328141d0814db2244b2843d
   m_configObjects: {}

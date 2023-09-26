@@ -1,15 +1,21 @@
 ﻿<Properties StartupConfiguration="{E55BA011-5D1C-CBF7-1C31-5C982BA0C716}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraMovement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ButtonManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerMovement.cs" Line="50" Column="10" />
-      <File FileName="Assets/Scripts/CameraMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UIManager.cs" Line="17" Column="10" />
+      <File FileName="Assets/Scripts/ButtonManager.cs" Line="4" Column="1" />
+      <File FileName="Assets/Scripts/CameraMovement.cs" Line="4" Column="1" />
+      <File FileName="Assets/Scripts/PlayerMovement.cs" Line="45" Column="48" />
+      <File FileName="Assets/Scripts/EndGame.cs" Line="16" Column="30" />
+      <File FileName="Assets/Scripts/StartGame.cs" Line="10" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Class_Sep7" expanded="True">
-            <Node name="Assets" expanded="True" selected="True">
-              <Node name="Scripts" expanded="True" />
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="ButtonManager.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -18,7 +24,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="82067fae-969b-4de4-888b-aab29f14af08" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8ee9aa8e-ade8-4664-9be3-00e4303b6085" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
