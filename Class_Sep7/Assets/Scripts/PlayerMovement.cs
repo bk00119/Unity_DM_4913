@@ -13,20 +13,25 @@ public class PlayerMovement : MonoBehaviour {
     static int maxJumpCount = 2;
     bool onGround; // init: false
     public int score;
+    public float jumpMaxVelocity;
+    AudioSource jumpSFX, impactSFX, gameOverSFX;
 
     // Start is called before the first frame update
     void Start() {
         rb = gameObject.GetComponent<Rigidbody2D>();
         cc = gameObject.GetComponent<CircleCollider2D>();
-        //jumpSpeed = 430;
+        jumpSFX = gameObject.GetComponents<AudioSource>()[0];
+        impactSFX = gameObject.GetComponents<AudioSource>()[1];
+        gameOverSFX = gameObject.GetComponents<AudioSource>()[2];
     }
 
     // Update is called once per frame
     void Update() {
         // Jump
-        if ((Input.GetKeyDown(KeyCode.UpArrow) && jumpCount < maxJumpCount && onGround==false) || (Input.GetKeyDown(KeyCode.UpArrow) && onGround)) {  //GetKey: everytime, GetKeyDown: only the first time pressed
+        if ((Input.GetKeyDown(KeyCode.UpArrow) && jumpCount < maxJumpCount && onGround==false) || (Input.GetKeyDown(KeyCode.UpArrow) && onGround)) {  //GetKey: everytime, GetKeyDown: only the first time 
             rb.AddForce(Vector2.up * jumpSpeed);
             jumpCount++;
+            jumpSFX.Play();
         }
 
         // Move to the right
@@ -38,23 +43,30 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             rb.AddForce(Vector2.left * movementSpeed);
         }
+
+        //customize it
+        if (rb.velocity.y > jumpMaxVelocity) {
+            rb.velocity = new Vector2(rb.velocity.x, jumpMaxVelocity);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.tag == "Star") {
+            UIManager.score += 10;
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Enemy1") {
-            //SceneManager.LoadScene(1); //CHANGE THIS
-            SceneManager.LoadScene(2); //2: Game Over Scene
+            gameOverSFX.Play();
+            Invoke("GameOver", 1f); // FIX THIS: THIS CAUSES A DELAY ON THE PLAYER DYING
         }
 
         if (collision.gameObject.tag == "Ground") {
             onGround = true;
             jumpCount = 0;
-        }
-
-        if (collision.gameObject.tag == "Star") {
-            score++;
-            //Destroy(GetComponent<PolygonCollider2D>());
-            Destroy(collision.gameObject);
+            impactSFX.Play();
         }
 
     }
@@ -63,6 +75,10 @@ public class PlayerMovement : MonoBehaviour {
         if (collision.gameObject.tag == "Ground") {
             onGround = false;
         }
+    }
+
+    void GameOver() {
+        SceneManager.LoadScene(2); //2: Game Over Scene
     }
 
 }

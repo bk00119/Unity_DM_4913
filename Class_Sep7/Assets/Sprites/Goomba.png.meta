@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 22d8394722792401c8e09637b7b58de1
+guid: cdc4f81fb9156425b85e1aa99d76cea1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,17 +42,17 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 75, y: 76, z: 77, w: 88}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -103,96 +103,89 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Arcade - Pac-Man - General Sprites (1)_0
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 1
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -47.5, y: -16}
-        - {x: -47.5, y: 16}
-        - {x: -23.5, y: 16}
-        - {x: -23.5, y: -16}
-      - - {x: -15.5, y: -16}
-        - {x: -15.5, y: 16}
-        - {x: 14.5, y: 16}
-        - {x: 14.5, y: -16}
-      - - {x: 16.5, y: -16}
-        - {x: 16.5, y: 16}
-        - {x: 48.5, y: 16}
-        - {x: 48.5, y: -16}
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc01f1ee9b04d4d07a0c74b1f0639f2d
-      internalID: 1215370590
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arcade - Pac-Man - General Sprites (1)_1
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 1
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2bddd5dda39a1440a9d0788d87d5c29f
-      internalID: 622427290
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arcade - Pac-Man - General Sprites (1)_2
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 1
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 01482dfd797ef45119edffb42f673e28
-      internalID: 972639216
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    outline: []
+    sprites: []
+    outline:
+    - - {x: 9, y: -90}
+      - {x: 9, y: -99}
+      - {x: 11, y: -101}
+      - {x: 66, y: -101}
+      - {x: 68, y: -99}
+      - {x: 68, y: -90}
+      - {x: 77, y: -90}
+      - {x: 79, y: -88}
+      - {x: 79, y: -66}
+      - {x: 77, y: -64}
+      - {x: 68, y: -64}
+      - {x: 68, y: -55}
+      - {x: 66, y: -53}
+      - {x: 57, y: -53}
+      - {x: 57, y: -46}
+      - {x: 88, y: -46}
+      - {x: 90, y: -44}
+      - {x: 90, y: -35}
+      - {x: 99, y: -35}
+      - {x: 101, y: -33}
+      - {x: 101, y: 22}
+      - {x: 99, y: 24}
+      - {x: 90, y: 24}
+      - {x: 90, y: 44}
+      - {x: 88, y: 46}
+      - {x: 79, y: 46}
+      - {x: 79, y: 55}
+      - {x: 77, y: 57}
+      - {x: 68, y: 57}
+      - {x: 68, y: 66}
+      - {x: 66, y: 68}
+      - {x: 57, y: 68}
+      - {x: 57, y: 77}
+      - {x: 55, y: 79}
+      - {x: 46, y: 79}
+      - {x: 46, y: 88}
+      - {x: 44, y: 90}
+      - {x: -44, y: 90}
+      - {x: -46, y: 88}
+      - {x: -46, y: 79}
+      - {x: -55, y: 79}
+      - {x: -57, y: 77}
+      - {x: -57, y: 68}
+      - {x: -66, y: 68}
+      - {x: -68, y: 66}
+      - {x: -68, y: 57}
+      - {x: -77, y: 57}
+      - {x: -79, y: 55}
+      - {x: -79, y: 46}
+      - {x: -88, y: 46}
+      - {x: -90, y: 44}
+      - {x: -90, y: 24}
+      - {x: -99, y: 24}
+      - {x: -101, y: 22}
+      - {x: -101, y: -33}
+      - {x: -99, y: -35}
+      - {x: -90, y: -35}
+      - {x: -90, y: -44}
+      - {x: -88, y: -46}
+      - {x: -57, y: -46}
+      - {x: -57, y: -64}
+      - {x: -77, y: -64}
+      - {x: -79, y: -66}
+      - {x: -79, y: -88}
+      - {x: -77, y: -90}
+      - {x: -68, y: -90}
+      - {x: -68, y: -99}
+      - {x: -66, y: -101}
+      - {x: -33, y: -101}
+      - {x: -31, y: -99}
+      - {x: -31, y: -90}
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Arcade - Pac-Man - General Sprites (1)_1: 1843616977
-      Arcade - Pac-Man - General Sprites (1)_2: 622427290
-      Arcade - Pac-Man - General Sprites (1)_0: 1215370590
+    nameFileIdTable: {}
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
