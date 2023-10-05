@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour {
     Rigidbody2D rb;
     CircleCollider2D cc;
     public int jumpSpeed; // public: can be edited in Unity
-    //float jumpSpeedFloat = 100f; //float needs 'f' at the end of the number
     public int movementSpeed;
     int jumpCount; // init: 0
     static int maxJumpCount = 2;
@@ -15,6 +14,7 @@ public class PlayerMovement : MonoBehaviour {
     public int score;
     public float jumpMaxVelocity;
     AudioSource jumpSFX, impactSFX, gameOverSFX;
+    GameObject AM;
 
     // Start is called before the first frame update
     void Start() {
@@ -22,7 +22,10 @@ public class PlayerMovement : MonoBehaviour {
         cc = gameObject.GetComponent<CircleCollider2D>();
         jumpSFX = gameObject.GetComponents<AudioSource>()[0];
         impactSFX = gameObject.GetComponents<AudioSource>()[1];
-        gameOverSFX = gameObject.GetComponents<AudioSource>()[2];
+        //gameOverSFX = gameObject.GetComponents<AudioSource>()[2];
+
+        AM = GameObject.FindGameObjectWithTag("AM");
+        gameOverSFX = AM.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,7 +54,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "Star") {
+        if (collision.gameObject.tag == "Coin") {
             UIManager.score += 10;
             Destroy(collision.gameObject);
         }
@@ -60,7 +63,8 @@ public class PlayerMovement : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Enemy1") {
             gameOverSFX.Play();
-            Invoke("GameOver", 1f); // FIX THIS: THIS CAUSES A DELAY ON THE PLAYER DYING
+            GameOver();
+            //Invoke("GameOver", 1f); // FIX THIS: THIS CAUSES A DELAY ON THE PLAYER DYING
         }
 
         if (collision.gameObject.tag == "Ground") {

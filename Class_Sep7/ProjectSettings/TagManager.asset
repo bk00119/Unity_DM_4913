@@ -6,8 +6,10 @@ TagManager:
   tags:
   - Enemy1
   - Ground
+  - Coin
+  - PlatformGroup
   - Star
-  - PlatformGroup1
+  - AM
   layers:
   - Default
   - TransparentFX

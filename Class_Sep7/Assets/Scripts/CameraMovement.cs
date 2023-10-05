@@ -5,38 +5,30 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour {
     public int speed = 3;
 
-    public GameObject platform;
-    public GameObject enemy_platform;
-    public GameObject star_platform;
-    public GameObject platformGroup1;
-
-    float group1_timer;
+    public GameObject[] platformGroup = new GameObject[5];
+    float[] platform_timer = { 7.0f, 5.0f, 4.0f, 7.0f, 3.0f };
+    const float START_TIMER = 6.0f;
+    float timer;
+    int platform_type;
 
     Vector3 platform_vector;
-    Vector3 enemy_vector;
-    Vector3 star_vector;
-
-    const float DEFAULT_TIMER = 7f;
 
     // Start is called before the first frame update
     void Start() {
-        //group1_timer = Random.Range(10f, 15f);
-        group1_timer = DEFAULT_TIMER;
+        timer = START_TIMER;
     }
 
     // Update is called once per frame
     void Update() {
         transform.Translate(Vector2.up * Time.deltaTime * speed);
-        group1_timer -= Time.deltaTime;
+        timer -= Time.deltaTime;
 
-        if (group1_timer < 0) {
-            platform_vector = new Vector3(Random.Range(-10f, 10f), transform.position.y + 5, 0); // LATEST PLATFORM'S VECTOR
-
-            //Instantiate(platform, platform_vector, Quaternion.identity);
-            Instantiate(platformGroup1, platform_vector, Quaternion.identity);
-
-            //group1_timer = Random.Range(10f, 15f);
-            group1_timer = DEFAULT_TIMER;
+        if (timer < 0) {
+            platform_vector = new Vector3(Random.Range(-10f, 10f), transform.position.y + 5, 0); // LATEST PLATFORM'S 
+            platform_type = Random.Range(0, platform_timer.Length);
+            Instantiate(platformGroup[platform_type], platform_vector, Quaternion.identity);
+            timer = platform_timer[platform_type];
         }
+
     }
 }   
