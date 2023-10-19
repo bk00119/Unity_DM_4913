@@ -10,6 +10,7 @@ TagManager:
   - PlatformGroup
   - Star
   - AM
+  - Bullet
   layers:
   - Default
   - TransparentFX

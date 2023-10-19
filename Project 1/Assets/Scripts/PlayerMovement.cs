@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour {
     bool onGround; // init: false
     public int score;
     public float jumpMaxVelocity;
-    AudioSource jumpSFX, impactSFX, gameOverSFX;
+    AudioSource jumpSFX, impactSFX, gameOverSFX, coinSFX;
     GameObject AM;
 
     // Start is called before the first frame update
@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour {
 
         AM = GameObject.FindGameObjectWithTag("AM");
         gameOverSFX = AM.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
+        coinSFX = AM.transform.GetChild(2).gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -55,8 +56,14 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Coin") {
+            coinSFX.Play();
             UIManager.score += 10;
             Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.tag == "Bullet") {
+            gameOverSFX.Play();
+            GameOver();
         }
     }
 
