@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Stone : MonoBehaviour {
     bool isSelected;
+    public int color; // 0: black, 1: white
 
     // Start is called before the first frame update
     void Start() {

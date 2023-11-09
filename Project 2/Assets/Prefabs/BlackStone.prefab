@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 784029345256049497}
   - component: {fileID: 784029345256049496}
   - component: {fileID: 784029345256049503}
+  - component: {fileID: -1285682494691957601}
   m_Layer: 0
   m_Name: BlackStone
   m_TagString: BlackStone
@@ -3992,3 +3993,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &-1285682494691957601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784029345256049502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b42d0c76a99c41fb89ea8e5a7ececd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0

@@ -32,16 +32,10 @@ public static class Custom {
 
     public static bool onSamePos(ObjectPos posA, ObjectPos posB) {
         return posA.boardPos == posB.boardPos && posA.boardRow == posB.boardRow && posA.boardCol == posB.boardCol;
-        //if(posA.boardPos == posB.boardPos) {
-        //    return false;
-        //}
-        //if(posA.boardRow == posB.boardRow) {
-        //    return false;
-        //}
-        //if(posA.boardCol == posB.boardCol) {
-        //    return false;
-        //}
-        //return true;
+    }
+
+    public static bool onSameBoard(ObjectPos posA, ObjectPos posB) {
+        return posA.boardPos == posB.boardPos;
     }
 }
 

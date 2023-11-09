@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
-    int Turn = 0;  // 0: Black, 1: Black moving pos, 2: White, 3: White moving pos
+    //int Turn = 0;  // 0: Black, 1: Black moving pos, 2: White, 3: White moving pos
     
     // Start is called before the first frame update
     void Start() {

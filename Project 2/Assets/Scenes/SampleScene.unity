@@ -32387,6 +32387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b42d0c76a99c41fb89ea8e5a7ececd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: 0
 --- !u!1 &1253787929
 GameObject:
   m_ObjectHideFlags: 0
@@ -48978,8 +48979,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stoneType:
-  - {fileID: 784029345256049502, guid: 98108359d48fa44c292c2e08d2ce6440, type: 3}
-  - {fileID: 6419463322427059812, guid: 33dd3d76248ac410286f5747a6f01d66, type: 3}
+  - {fileID: -1285682494691957601, guid: 98108359d48fa44c292c2e08d2ce6440, type: 3}
+  - {fileID: -8314605212451990416, guid: 33dd3d76248ac410286f5747a6f01d66, type: 3}
   selector: {fileID: 1879062335118463609, guid: 4e705a903978e4e3c9d4978f2746bd89, type: 3}
 --- !u!1 &1841929573
 GameObject:
