@@ -214,27 +214,27 @@ public class Board : MonoBehaviour {
         selectors[3, 0, 0].stone = Instantiate(stoneType[1], new Vector3(-4.38f, -0.21f, 2.3f), Quaternion.identity);
         selectors[3, 0, 0].stone.color = 1;
 
-        selectors[3, 0, 0].stone = Instantiate(stoneType[1], new Vector3(-8.38f, -0.21f, 2.3f), Quaternion.identity);
-        selectors[3, 0, 0].stone.color = 1;
+        selectors[3, 0, 1].stone = Instantiate(stoneType[1], new Vector3(-8.38f, -0.21f, 2.3f), Quaternion.identity);
+        selectors[3, 0, 1].stone.color = 1;
 
-        selectors[3, 0, 0].stone = Instantiate(stoneType[1], new Vector3(-12.38f, -0.21f, 2.3f), Quaternion.identity);
-        selectors[3, 0, 0].stone.color = 1;
+        selectors[3, 0, 2].stone = Instantiate(stoneType[1], new Vector3(-12.38f, -0.21f, 2.3f), Quaternion.identity);
+        selectors[3, 0, 2].stone.color = 1;
 
-        selectors[3, 0, 0].stone = Instantiate(stoneType[1], new Vector3(-16.38f, -0.21f, 2.3f), Quaternion.identity);
-        selectors[3, 0, 0].stone.color = 1;
+        selectors[3, 0, 3].stone = Instantiate(stoneType[1], new Vector3(-16.38f, -0.21f, 2.3f), Quaternion.identity);
+        selectors[3, 0, 3].stone.color = 1;
 
         // Black Stones
         selectors[3, 3, 0].stone = Instantiate(stoneType[0], new Vector3(-4.38f, -0.21f, 14.3f), Quaternion.identity);
         selectors[3, 3, 0].stone.color = 0;
 
-        selectors[3, 3, 0].stone = Instantiate(stoneType[0], new Vector3(-8.38f, -0.21f, 14.3f), Quaternion.identity);
-        selectors[3, 3, 0].stone.color = 0;
+        selectors[3, 3, 1].stone = Instantiate(stoneType[0], new Vector3(-8.38f, -0.21f, 14.3f), Quaternion.identity);
+        selectors[3, 3, 1].stone.color = 0;
 
-        selectors[3, 3, 0].stone = Instantiate(stoneType[0], new Vector3(-12.38f, -0.21f, 14.3f), Quaternion.identity);
-        selectors[3, 3, 0].stone.color = 0;
+        selectors[3, 3, 2].stone = Instantiate(stoneType[0], new Vector3(-12.38f, -0.21f, 14.3f), Quaternion.identity);
+        selectors[3, 3, 2].stone.color = 0;
 
-        selectors[3, 3, 0].stone = Instantiate(stoneType[0], new Vector3(-16.38f, -0.21f, 14.3f), Quaternion.identity);
-        selectors[3, 3, 0].stone.color = 0;
+        selectors[3, 3, 3].stone = Instantiate(stoneType[0], new Vector3(-16.38f, -0.21f, 14.3f), Quaternion.identity);
+        selectors[3, 3, 3].stone.color = 0;
 
 
         stones = new int[4, 4, 4] {
@@ -274,5 +274,7 @@ public class Board : MonoBehaviour {
         //    pasStone = null;
         //    agrStone = null;
         //}
+
+        
     }
 }

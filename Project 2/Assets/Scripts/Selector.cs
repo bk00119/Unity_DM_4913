@@ -19,9 +19,15 @@ public class Selector : MonoBehaviour {
         // index of the game object
         //int[] currentSelectorIndex = Custom.findIndexOfSelectors(Board.selectors, this); //
 
-        // Always select pasStone first
+        // Select pasStone --> agrStone --> newPos
         if (Board.pasStone == null) {
-            // CHECK IF THE STONE IS ATTACHED
+            // pasStone selected
+
+            // Check if blank selector or enemy's stone is selected
+            if (stone == null || stone.color != Board.turn) {
+                print("You must select your stone for a passive move");
+                return;
+            }
 
             ObjectPos stonePos = Custom.findIndexOfSelectors(Board.selectors, this);
             if (Board.turn == 0) {
@@ -30,7 +36,7 @@ public class Selector : MonoBehaviour {
                     print("pasStone must be selected from your side.");
                     return;
                 }
-            } else { //Board.turn == 1
+            } else { // turn: 1; White's turn
                 // White's passive move must be made from Board 1(0) or 2(1)
                 if (stonePos.boardPos == 2 || stonePos.boardPos == 3) {
                     print("pasStone must be selected from your side.");
@@ -39,8 +45,22 @@ public class Selector : MonoBehaviour {
             }
             Board.pasStone = this;
         } else if (Board.agrStone == null) {
+            // agrStone selected
+            if (stone == null || stone.color != Board.turn) {
+                print("You must select your stone for an agressive move");
+                return;
+            }
+
             ObjectPos pasStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.pasStone);
             ObjectPos agrStonePos = Custom.findIndexOfSelectors(Board.selectors, this);
+
+            if (Custom.onSameBoard(pasStonePos, agrStonePos)) {
+                // Reset both stones to null
+                //Board.pasStone = null;
+                print("pasStone and agrStone are on the same board");
+                return;
+            }
+
             // Black's aggressive move must be made from the different color of the board
             if ((agrStonePos.boardPos == 0 && pasStonePos.boardPos == 3) ||
                 (agrStonePos.boardPos == 1 && pasStonePos.boardPos == 2) ||
@@ -49,40 +69,34 @@ public class Selector : MonoBehaviour {
                 print("agrStone must be selected from the different color of the board.");
                 return;
             }
-            //if (stonePos.boardPos == 0 || stonePos.boardPos == 1) {
-            //    print("agrStone must be selected from the different color of the board.");
-            //    return;
-            //}
-            // White's aggressive move must be made from the different color of the board
-            //if (stonePos.boardPos == 2 || stonePos.boardPos == 3) {
-            //    print("agrStone must be selected from the different color of the board.");
-            //    return;
-            //}
+
             Board.agrStone = this;
         } else if (Board.newPos == null) { //EDIT THIS
+            // newPos selected
+
             Board.newPos = this;
         }
 
-        // When two stones are selected
-        if (Board.pasStone && Board.agrStone) {
-            ObjectPos pasStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.pasStone);
-            ObjectPos agrStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.agrStone);
+        //// When two stones are selected
+        //if (Board.pasStone && Board.agrStone) {
+        //    ObjectPos pasStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.pasStone);
+        //    ObjectPos agrStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.agrStone);
 
-            if (Custom.onSameBoard(pasStonePos, agrStonePos)) {
-                // Reset both stones to null
-                Board.pasStone = null;
-                Board.agrStone = null;
-                print("pasStone and agrStone are on the same board");
-                return;
-            }
-        }
+        //    if (Custom.onSameBoard(pasStonePos, agrStonePos)) {
+        //        // Reset both stones to null
+        //        Board.pasStone = null;
+        //        Board.agrStone = null;
+        //        print("pasStone and agrStone are on the same board");
+        //        return;
+        //    }
+        //}
 
         // When the new move position is selected
+        // FOR LATER...the order of selecting pasStone and agrStone could change.
         if (Board.pasStone && Board.agrStone && Board.newPos) {
             ObjectPos pasStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.pasStone);
             ObjectPos agrStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.agrStone);
-            ObjectPos newPos = Custom.findIndexOfSelectors(Board.selectors, Board.newPos); // EDIT: IF PAS MOVE ISN'T SELECTED
-            // NEED A POS FOR THE OTHER STONE;
+            ObjectPos newPos = Custom.findIndexOfSelectors(Board.selectors, Board.newPos);
 
             // If newPos and pasStonePos are on the same pos
             if(Custom.onSamePos(pasStonePos, newPos)){
@@ -105,11 +119,39 @@ public class Selector : MonoBehaviour {
                 return;
             }
 
-            //print("Passive Stone pos: " + pasStonePos.boardPos + " " + pasStonePos.boardRow + " " + pasStonePos.boardCol);
-            //print("Aggressive Stone pos: " + agrStonePos.boardPos + " " + agrStonePos.boardRow + " " + agrStonePos.boardCol);
-            //print("New pos: " + newPos.boardPos + " " + newPos.boardRow + " " + newPos.boardCol);
+            // check if the move isn't valid
+            if(!Custom.isValidMove(Board.selectors, pasStonePos, agrStonePos, newPos)) {
+                print("the move is not valid");
+                Board.pasStone = null;
+                Board.agrStone = null;
+                Board.newPos = null;
+                return;
+            }
 
             // change the position of pasStone and agrStone
+            if (newPos.boardPos == pasStonePos.boardPos) {
+                // newPos made from pasStone's board
+                // change pasStone's position
+                Vector3 pasSelectorPos = Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].transform.position;
+                Board.pasStone.stone.transform.position = new Vector3(pasSelectorPos.x, pasSelectorPos.y, pasSelectorPos.z);
+
+                // change agrStone's position
+                ObjectPos newAgrPos = Custom.getAnotherNewPos(pasStonePos, newPos, agrStonePos);
+                Vector3 agrSelectorPos = Board.selectors[newAgrPos.boardPos, newAgrPos.boardRow, newAgrPos.boardCol].transform.position;
+                Board.agrStone.stone.transform.position = new Vector3(agrSelectorPos.x, agrSelectorPos.y, agrSelectorPos.z);
+
+            } else {
+                // newPos made from agrStone's board
+                // change agrStone's position
+                Vector3 agrSelectorPos = Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].transform.position;
+                Board.agrStone.stone.transform.position = new Vector3(agrSelectorPos.x, agrSelectorPos.y, agrSelectorPos.z);
+
+                // change pasStone's position
+                ObjectPos newPasPos = Custom.getAnotherNewPos(agrStonePos, newPos, pasStonePos);
+                Vector3 pasSelectorPos = Board.selectors[newPasPos.boardPos, newPasPos.boardRow, newPasPos.boardCol].transform.position;
+                Board.pasStone.stone.transform.position = new Vector3(pasSelectorPos.x, pasSelectorPos.y, pasSelectorPos.z);
+
+            }
             // Board.selectors[0,0,0].stone.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
             // TESTING...
             //Board.agrStone.stone.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
@@ -124,7 +166,8 @@ public class Selector : MonoBehaviour {
             Board.pasStone = null;
             Board.agrStone = null;
             Board.newPos = null;
-
+            // CHANGE THE TURN
+            //Board.isBlackTurn = !(Board.isBlackTurn);
         }
     }
 }
