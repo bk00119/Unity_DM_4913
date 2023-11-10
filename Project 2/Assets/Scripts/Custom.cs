@@ -8,7 +8,7 @@ public class ObjectPos {
     public int boardCol;
 }
 
-public static class Custom {
+public class Custom : MonoBehaviour {
     public static ObjectPos findIndexOfSelectors(Selector[,,] selectors, Selector selector) {
         //int[] index = { -1, -1, -1 };
         // index[0] = Board Position
@@ -53,11 +53,13 @@ public static class Custom {
     public static bool isMoveDistanceValid(int[] distance) {
         // max move is +/- 2 in any direction
         if (distance[0] > 2 || distance[1] > 2) {
+            print("Move must be less than 2");
             return false;
         }
 
         // the diagonal move be the same for row and col ex) up+2 and left+1 --> Invalid
         if ((distance[0] == 1 && distance[1] == 2) || (distance[0] == 2 && distance[1] == 1)) {
+            print("Diagonal move must have the same row move and col move");
             return false;
         }
         return true;
@@ -66,16 +68,19 @@ public static class Custom {
     public static bool isPositionValid(Selector[,,] selectors, ObjectPos pos) {
         // board position is invalid
         if(pos.boardPos < 0 || pos.boardPos >= selectors.GetLength(0)) {
+            print("Board position is out of boud");
             return false;
         }
 
         // board row is invalid
         if(pos.boardRow < 0 || pos.boardRow >= selectors.GetLength(1)) {
+            print("Board row is out of bound");
             return false;
         }
 
         // board col is invalid
         if(pos.boardCol < 0 || pos.boardCol >= selectors.GetLength(2)) {
+            print("Board col is out of bound");
             return false;
         }
 
@@ -100,13 +105,22 @@ public static class Custom {
 
         // check if the move is +2 and there's an ally in between the current position and the new position
         if (Mathf.Max(distance[0], distance[1]) == 2) {
+            print("here"); // REMOVE THIS.
+            print(newPos.boardRow);
+            print(newPos.boardCol);
+            print(pos.boardRow);
+            print(pos.boardCol);
             int midRow = newPos.boardRow;
             if (newPos.boardRow != pos.boardRow) {
-                midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+                //midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+                //midRow = Mathf.Abs(newPos.boardRow - pos.boardRow);
+                midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - 1;
             }
             int midCol = newPos.boardCol;
             if (newPos.boardCol != pos.boardCol) {
-                midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+                //midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+                //midCol = Mathf.Abs(newPos.boardCol - pos.boardCol);
+                midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - 1;
             }
             int boardPos = pos.boardPos;
 
@@ -114,6 +128,8 @@ public static class Custom {
                 selectors[boardPos, pos.boardRow, pos.boardCol].stone != null &&
                 selectors[boardPos, midRow, midCol].stone.color == selectors[boardPos, pos.boardRow, pos.boardCol].stone.color) {
                 // the same color --> ally stone is in between
+                print(midRow);
+                print(midCol);
                 numAlly++;
             }
         }
@@ -124,6 +140,7 @@ public static class Custom {
             selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].stone.color == selectors[pos.boardPos, pos.boardRow, pos.boardCol].stone.color) {
             // the same color --> ally stone is in between
             numAlly++;
+
         }
 
         return numAlly;
@@ -140,11 +157,13 @@ public static class Custom {
             //int midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
             int midRow = newPos.boardRow;
             if (newPos.boardRow != pos.boardRow) {
-                midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+                //midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+                midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - 1;
             }
             int midCol = newPos.boardCol;
             if (newPos.boardCol != pos.boardCol) {
-                midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+                //midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+                midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - 1;
             }
             int boardPos = pos.boardPos;
 
@@ -170,6 +189,9 @@ public static class Custom {
     public static bool isValidPassiveMove(Selector[,,] selectors, ObjectPos pasPos, ObjectPos newPos) {
         // passive move can't push any stone
         if ((numAllyOnWay(selectors, pasPos, newPos) + numEnemyOnWay(selectors, pasPos, newPos)) > 0) {
+            print(numAllyOnWay(selectors, pasPos, newPos)); // REMOVE THIS
+            print(numEnemyOnWay(selectors, pasPos, newPos)); // REMOVE THIS
+            print("Passive move can't push any stone");
             return false;
         }
 
@@ -179,11 +201,13 @@ public static class Custom {
     public static bool isValidAggressiveMove(Selector[,,] selectors, ObjectPos agrPos, ObjectPos newPos) {
         // any allystone is between agrPos and newPos or on newPos
         if (numAllyOnWay(selectors, agrPos, newPos) > 0) {
+            print("Aggressive move can't push any ally stones");
             return false;
         }
 
         // two enemy stones are on the way or on new Pos
         if (numEnemyOnWay(selectors, agrPos, newPos) > 1) {
+            print("Aggresive move can't push two enemy stones");
             return false;
         }
 
@@ -238,14 +262,106 @@ public static class Custom {
             }
             // 2) check if pasStone pushes any stone
             if (!isValidPassiveMove(selectors, pasPos, newPasPos)) { // ERROR: INDEX OUF OF BOUND
+                print(pasPos.boardRow + ", " + pasPos.boardCol); //REMOVE THIS.
+                print(newPasPos.boardRow + ", " + newPasPos.boardCol); //REMOVE THIS.
+                print("test"); //REMOVE THIS.
                 return false;
             }
 
         } else {
             // if the new move was made from the board where no stone is selected on
+            print("new move position is made from the board where no stone is selected on");
             return false;
         }
         // every edgecase passed
         return true;
     }
+
+    public static ObjectPos getEnemyPos(Selector[,,] selectors, ObjectPos pos, ObjectPos newPos) {
+        ObjectPos enemyPos = new ObjectPos();
+        enemyPos.boardPos = pos.boardPos;
+
+        int[] distance = getDistance(newPos, pos);
+
+        // check if the move is +2 and there's an enemy in between the current position and the new position
+        if (Mathf.Max(distance[0], distance[1]) == 2) {
+            //int midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+            //int midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+            int midRow = newPos.boardRow;
+            if (newPos.boardRow != pos.boardRow) {
+                midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+            }
+            int midCol = newPos.boardCol;
+            if (newPos.boardCol != pos.boardCol) {
+                midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+            }
+            int boardPos = pos.boardPos;
+
+            if (selectors[boardPos, midRow, midCol].stone != null &&
+                selectors[boardPos, pos.boardRow, pos.boardCol].stone != null &&
+                selectors[boardPos, midRow, midCol].stone.color != selectors[boardPos, pos.boardRow, pos.boardCol].stone.color) {
+                // not the same color --> enemy stone is in between
+                enemyPos.boardRow = midRow;
+                enemyPos.boardCol = midCol;
+                return enemyPos;
+            }
+        }
+
+        // check if on the new move's position has an enemy stone
+        if (selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].stone != null &&
+            selectors[pos.boardPos, pos.boardRow, pos.boardCol].stone != null &&
+            selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].stone.color != selectors[pos.boardPos, pos.boardRow, pos.boardCol].stone.color) {
+            // not the same color --> enemy stone is in between
+            enemyPos.boardRow = newPos.boardRow;
+            enemyPos.boardCol = newPos.boardCol;
+            return enemyPos;
+        }
+
+        return null;
+    }
+
+    public static void pushStone(Selector[,,] selectors, ObjectPos pos, ObjectPos newPos) {
+        // this function gets called after checking the validity of the move
+
+        // no enemy stone found
+        if (numEnemyOnWay(selectors, pos, newPos) == 0) {
+            return;
+        }
+
+        ObjectPos enemyPos = getEnemyPos(selectors, pos, newPos);
+        // 1) ref the enemy stone object
+        Stone temp = selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone;
+        //Destroy(selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone);
+        //selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone.destroy();
+
+        // 2) unattach the enemy stone from selector
+        selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone = null;
+
+        // 3) destroy the enemy stone object
+        Destroy(temp.gameObject);
+
+    }
+
+    public static void printSelectors(Selector[,,] selectors) {
+        string arr = "";
+        for (int i = 0; i < selectors.GetLength(0); i++) {
+            for (int j = 0; j < selectors.GetLength(1); j++) {
+                for (int k = 0; k < selectors.GetLength(2); k++) {
+                    if (selectors[i, j, k].stone == null) {
+                        arr += " 2 ";
+                    } else {
+                        if (selectors[i, j, k].stone.color == 0) {
+                            arr += " 0 ";
+                        } else {
+                            arr += " 1 ";
+                        }
+                    }
+                }
+                arr += "\n";
+            }
+            arr += "\n\n";
+        }
+        print(arr);
+    }
+ 
 }

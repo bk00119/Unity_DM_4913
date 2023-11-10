@@ -5,11 +5,9 @@ using UnityEngine;
 public class Board : MonoBehaviour {
     public Stone[] stoneType = new Stone[2]; // 0: Black Stone, 1: White Stone
     public Selector selector;
-    //public static GameObject[,,] stones;
-    public static int[,,] stones;
     public static Selector[,,] selectors;
 
-    public static Selector pasStone, agrStone, pasNewPos, agrNewPos, newPos;
+    public static Selector pasStone, agrStone, newPos; // newPasPos, newAgrPos;
     public static Vector3 pasPos, agrPos;
 
     public static Player blackPlayer, whitePlayer;
@@ -236,45 +234,10 @@ public class Board : MonoBehaviour {
         selectors[3, 3, 3].stone = Instantiate(stoneType[0], new Vector3(-16.38f, -0.21f, 14.3f), Quaternion.identity);
         selectors[3, 3, 3].stone.color = 0;
 
-
-        stones = new int[4, 4, 4] {
-            {
-                { 1, 1, 1, 1 },
-                { 2, 2, 2, 2 },
-                { 2, 2, 2, 2 },
-                { 0, 0, 0, 0 }
-            },
-            {
-                { 1, 1, 1, 1 },
-                { 2, 2, 2, 2 },
-                { 2, 2, 2, 2 },
-                { 0, 0, 0, 0 }
-            },
-            {
-                { 1, 1, 1, 1 },
-                { 2, 2, 2, 2 },
-                { 2, 2, 2, 2 },
-                { 0, 0, 0, 0 }
-            },
-            {
-                { 1, 1, 1, 1 },
-                { 2, 2, 2, 2 },
-                { 2, 2, 2, 2 },
-                { 0, 0, 0, 0 }
-            }
-        };
     }
 
     // Update is called once per frame
     void Update() {
-        //if (pasStone.tag == "White Stone" && agrStone.tag == "Black Stone") {
-        //    pasStone.transform.position = new Vector3(-27, -0, 6);
-        //    agrStone.transform.position = new Vector3(-30, -0, 6);
 
-        //    pasStone = null;
-        //    agrStone = null;
-        //}
-
-        
     }
 }

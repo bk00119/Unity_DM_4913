@@ -12,14 +12,11 @@ public class Selector : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        
     }
 
     public void OnMouseDown() {
-        // index of the game object
-        //int[] currentSelectorIndex = Custom.findIndexOfSelectors(Board.selectors, this); //
-
-        // Select pasStone --> agrStone --> newPos
+        // Order: Select pasStone --> agrStone --> newPos
         if (Board.pasStone == null) {
             // pasStone selected
 
@@ -77,20 +74,6 @@ public class Selector : MonoBehaviour {
             Board.newPos = this;
         }
 
-        //// When two stones are selected
-        //if (Board.pasStone && Board.agrStone) {
-        //    ObjectPos pasStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.pasStone);
-        //    ObjectPos agrStonePos = Custom.findIndexOfSelectors(Board.selectors, Board.agrStone);
-
-        //    if (Custom.onSameBoard(pasStonePos, agrStonePos)) {
-        //        // Reset both stones to null
-        //        Board.pasStone = null;
-        //        Board.agrStone = null;
-        //        print("pasStone and agrStone are on the same board");
-        //        return;
-        //    }
-        //}
-
         // When the new move position is selected
         // FOR LATER...the order of selecting pasStone and agrStone could change.
         if (Board.pasStone && Board.agrStone && Board.newPos) {
@@ -134,40 +117,51 @@ public class Selector : MonoBehaviour {
                 // change pasStone's position
                 Vector3 pasSelectorPos = Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].transform.position;
                 Board.pasStone.stone.transform.position = new Vector3(pasSelectorPos.x, pasSelectorPos.y, pasSelectorPos.z);
+                // update selector's stone
+                Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].stone = Board.pasStone.stone;
+                Board.selectors[pasStonePos.boardPos, pasStonePos.boardRow, pasStonePos.boardCol].stone = null;
 
                 // change agrStone's position
                 ObjectPos newAgrPos = Custom.getAnotherNewPos(pasStonePos, newPos, agrStonePos);
                 Vector3 agrSelectorPos = Board.selectors[newAgrPos.boardPos, newAgrPos.boardRow, newAgrPos.boardCol].transform.position;
                 Board.agrStone.stone.transform.position = new Vector3(agrSelectorPos.x, agrSelectorPos.y, agrSelectorPos.z);
+                // push enemy's stone
+                Custom.pushStone(Board.selectors, agrStonePos, newAgrPos);
+
+                // update selector's stone
+                Board.selectors[newAgrPos.boardPos, newAgrPos.boardRow, newAgrPos.boardCol].stone = Board.agrStone.stone;
+                Board.selectors[agrStonePos.boardPos, agrStonePos.boardRow, agrStonePos.boardCol].stone = null;
 
             } else {
                 // newPos made from agrStone's board
                 // change agrStone's position
                 Vector3 agrSelectorPos = Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].transform.position;
                 Board.agrStone.stone.transform.position = new Vector3(agrSelectorPos.x, agrSelectorPos.y, agrSelectorPos.z);
+                // push enemy's stone
+                Custom.pushStone(Board.selectors, agrStonePos, newPos);
+
+                // update selector's stone
+                Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].stone = Board.agrStone.stone;
+                Board.selectors[agrStonePos.boardPos, agrStonePos.boardRow, agrStonePos.boardCol].stone = null;
 
                 // change pasStone's position
                 ObjectPos newPasPos = Custom.getAnotherNewPos(agrStonePos, newPos, pasStonePos);
                 Vector3 pasSelectorPos = Board.selectors[newPasPos.boardPos, newPasPos.boardRow, newPasPos.boardCol].transform.position;
                 Board.pasStone.stone.transform.position = new Vector3(pasSelectorPos.x, pasSelectorPos.y, pasSelectorPos.z);
+                // update selector's stone
+                Board.selectors[newPasPos.boardPos, newPasPos.boardRow, newPasPos.boardCol].stone = Board.pasStone.stone;
+                Board.selectors[pasStonePos.boardPos, pasStonePos.boardRow, pasStonePos.boardCol].stone = null;
 
             }
-            // Board.selectors[0,0,0].stone.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-            // TESTING...
-            //Board.agrStone.stone.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
 
-            // change "stones" array
-            //Board.stones[currSelectorInd.boardPos, currSelectorInd.boardRow, currSelectorInd.boardCol] = 0;
-
-            // change selector.stone
-
-            print("Successful move"); // REMOVE THIS
             // reset the selections
             Board.pasStone = null;
             Board.agrStone = null;
             Board.newPos = null;
             // CHANGE THE TURN
             //Board.isBlackTurn = !(Board.isBlackTurn);
+
+            Custom.printSelectors(Board.selectors); // REMOVE THIS
         }
     }
 }
