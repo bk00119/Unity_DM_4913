@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Board : MonoBehaviour {
     public Stone[] stoneType = new Stone[2]; // 0: Black Stone, 1: White Stone
@@ -15,6 +16,8 @@ public class Board : MonoBehaviour {
 
     // Start is called before the first frame update 
     void Start() {
+        blackPlayer = new Player();
+        whitePlayer = new Player();
         selectors = new Selector[4, 4, 4] {
             // Board 1 (Top-Right: from Black Player's viewpoint)
             {
@@ -238,6 +241,39 @@ public class Board : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (blackPlayer.hasNoStoneOnBoard()) {
+            print("White player won");
+
+            // update UIManger
+            UIManager.result = "White player won!";
+            GameOver();
+        }
+        if (whitePlayer.hasNoStoneOnBoard()) {
+            print("Black player won");
+
+            //update UIManager
+            UIManager.result = "Black player won!";
+            GameOver();
+        }
+    }
+
+    void GameOver() {
+        SceneManager.LoadScene(2); //2: Game Over Scene
+    }
+
+    public static void changeTurn() {
+        // reset the selections
+        pasStone = null;
+        agrStone = null;
+        newPos = null;
+
+        // CHANGE THE TURN
+        turn += 1;
+        if (turn > 1) {
+            turn = 0;
+        }
+
+        // CHANGE THE CAMERA POSITION AND ROTATE
 
     }
 }

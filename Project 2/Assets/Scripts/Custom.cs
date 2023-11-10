@@ -98,6 +98,33 @@ public class Custom : MonoBehaviour {
         return newPosB;
     }
 
+    public static int getRowDirection(ObjectPos pos, ObjectPos newPos) {
+        int res = newPos.boardRow - pos.boardRow;
+        if (res < 0) {
+            return -1;
+        }
+        if (res > 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static int getColDirection(ObjectPos pos, ObjectPos newPos) {
+        int res = newPos.boardCol - pos.boardCol;
+        if (res < 0) {
+            return -1;
+        }
+        if (res > 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static bool posOutOfBound(Selector[,,] selectors, ObjectPos pos) {
+        return pos.boardRow < 0 || pos.boardRow >= selectors.GetLength(1) ||
+            pos.boardCol < 0 || pos.boardCol >= selectors.GetLength(2);
+    }
+
     public static int numAllyOnWay(Selector[,,] selectors, ObjectPos pos, ObjectPos newPos) {
         // 0: none, 1: one ally stone, 2: two ally stones
         int numAlly = 0;
@@ -105,11 +132,6 @@ public class Custom : MonoBehaviour {
 
         // check if the move is +2 and there's an ally in between the current position and the new position
         if (Mathf.Max(distance[0], distance[1]) == 2) {
-            print("here"); // REMOVE THIS.
-            print(newPos.boardRow);
-            print(newPos.boardCol);
-            print(pos.boardRow);
-            print(pos.boardCol);
             int midRow = newPos.boardRow;
             if (newPos.boardRow != pos.boardRow) {
                 //midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
@@ -128,8 +150,6 @@ public class Custom : MonoBehaviour {
                 selectors[boardPos, pos.boardRow, pos.boardCol].stone != null &&
                 selectors[boardPos, midRow, midCol].stone.color == selectors[boardPos, pos.boardRow, pos.boardCol].stone.color) {
                 // the same color --> ally stone is in between
-                print(midRow);
-                print(midCol);
                 numAlly++;
             }
         }
@@ -173,6 +193,8 @@ public class Custom : MonoBehaviour {
                 // not the same color --> enemy stone is in between
                 numEnemy++;
             }
+
+
         }
         
         // check if on the new move's position has an enemy stone
@@ -186,11 +208,28 @@ public class Custom : MonoBehaviour {
         return numEnemy;
     }
 
+    public static bool hasAStoneOnFurtherWay(Selector[,,] selectors, ObjectPos pos, ObjectPos newPos) {
+        // check if there's any stone next to that would get pushed off
+        int adjRow = newPos.boardRow + getRowDirection(pos, newPos); 
+        int adjCol = newPos.boardCol + getColDirection(pos, newPos);
+
+        // index out of bound --> the newPos is the last one by the end of the board
+        if (adjRow < 0 || adjRow >= selectors.GetLength(1) ||
+            adjCol < 0 || adjCol >= selectors.GetLength(2)) {
+            return false;
+        }
+
+        // no stone on the further way
+        if (selectors[newPos.boardPos, adjRow, adjCol].stone == null) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static bool isValidPassiveMove(Selector[,,] selectors, ObjectPos pasPos, ObjectPos newPos) {
         // passive move can't push any stone
         if ((numAllyOnWay(selectors, pasPos, newPos) + numEnemyOnWay(selectors, pasPos, newPos)) > 0) {
-            print(numAllyOnWay(selectors, pasPos, newPos)); // REMOVE THIS
-            print(numEnemyOnWay(selectors, pasPos, newPos)); // REMOVE THIS
             print("Passive move can't push any stone");
             return false;
         }
@@ -208,6 +247,11 @@ public class Custom : MonoBehaviour {
         // two enemy stones are on the way or on new Pos
         if (numEnemyOnWay(selectors, agrPos, newPos) > 1) {
             print("Aggresive move can't push two enemy stones");
+            return false;
+        }
+
+        // pushing two stones
+        if (numEnemyOnWay(selectors, agrPos, newPos) > 0 && hasAStoneOnFurtherWay(selectors, agrPos, newPos)) {
             return false;
         }
 
@@ -262,9 +306,6 @@ public class Custom : MonoBehaviour {
             }
             // 2) check if pasStone pushes any stone
             if (!isValidPassiveMove(selectors, pasPos, newPasPos)) { // ERROR: INDEX OUF OF BOUND
-                print(pasPos.boardRow + ", " + pasPos.boardCol); //REMOVE THIS.
-                print(newPasPos.boardRow + ", " + newPasPos.boardCol); //REMOVE THIS.
-                print("test"); //REMOVE THIS.
                 return false;
             }
 
@@ -277,6 +318,31 @@ public class Custom : MonoBehaviour {
         return true;
     }
 
+    public static ObjectPos getMidPos(ObjectPos pos, ObjectPos newPos) {
+        int[] distance = getDistance(newPos, pos);
+        // check if the move is +2
+        if (Mathf.Max(distance[0], distance[1]) < 2) {
+            return null;
+        }
+
+        ObjectPos midPos = new ObjectPos();
+        int midRow = newPos.boardRow;
+        if (newPos.boardRow != pos.boardRow) {
+            //midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+            midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - 1;
+        }
+        int midCol = newPos.boardCol;
+        if (newPos.boardCol != pos.boardCol) {
+            //midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+            midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - 1;
+        }
+        midPos.boardPos = pos.boardPos;
+        midPos.boardRow = midRow;
+        midPos.boardCol = midCol;
+
+        return midPos;
+    }
+
     public static ObjectPos getEnemyPos(Selector[,,] selectors, ObjectPos pos, ObjectPos newPos) {
         ObjectPos enemyPos = new ObjectPos();
         enemyPos.boardPos = pos.boardPos;
@@ -285,26 +351,36 @@ public class Custom : MonoBehaviour {
 
         // check if the move is +2 and there's an enemy in between the current position and the new position
         if (Mathf.Max(distance[0], distance[1]) == 2) {
-            //int midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
-            //int midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
-            int midRow = newPos.boardRow;
-            if (newPos.boardRow != pos.boardRow) {
-                midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
-            }
-            int midCol = newPos.boardCol;
-            if (newPos.boardCol != pos.boardCol) {
-                midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
-            }
-            int boardPos = pos.boardPos;
+            ////int midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+            ////int midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+            //int midRow = newPos.boardRow;
+            //if (newPos.boardRow != pos.boardRow) {
+            //    midRow = Mathf.Max(newPos.boardRow, pos.boardRow) - Mathf.Min(newPos.boardRow, pos.boardRow);
+            //}
+            //int midCol = newPos.boardCol;
+            //if (newPos.boardCol != pos.boardCol) {
+            //    midCol = Mathf.Max(newPos.boardCol, pos.boardCol) - Mathf.Min(newPos.boardCol, pos.boardCol);
+            //}
+            //int boardPos = pos.boardPos;
 
-            if (selectors[boardPos, midRow, midCol].stone != null &&
-                selectors[boardPos, pos.boardRow, pos.boardCol].stone != null &&
-                selectors[boardPos, midRow, midCol].stone.color != selectors[boardPos, pos.boardRow, pos.boardCol].stone.color) {
+            ObjectPos midPos = getMidPos(pos, newPos);
+            if (selectors[midPos.boardPos, midPos.boardRow, midPos.boardCol].stone != null &&
+                selectors[pos.boardPos, pos.boardRow, pos.boardCol].stone != null &&
+                selectors[midPos.boardPos, midPos.boardRow, midPos.boardCol].stone.color != selectors[pos.boardPos, pos.boardRow, pos.boardCol].stone.color) {
                 // not the same color --> enemy stone is in between
-                enemyPos.boardRow = midRow;
-                enemyPos.boardCol = midCol;
+                enemyPos.boardRow = midPos.boardRow;
+                enemyPos.boardCol = midPos.boardCol;
                 return enemyPos;
             }
+
+            //if (selectors[boardPos, midRow, midCol].stone != null &&
+            //    selectors[boardPos, pos.boardRow, pos.boardCol].stone != null &&
+            //    selectors[boardPos, midRow, midCol].stone.color != selectors[boardPos, pos.boardRow, pos.boardCol].stone.color) {
+            //    // not the same color --> enemy stone is in between
+            //    enemyPos.boardRow = midRow;
+            //    enemyPos.boardCol = midCol;
+            //    return enemyPos;
+            //}
         }
 
         // check if on the new move's position has an enemy stone
@@ -320,25 +396,63 @@ public class Custom : MonoBehaviour {
         return null;
     }
 
+    public static ObjectPos getNewEnemyPos(Selector[,,] selectors, ObjectPos enemyPos, ObjectPos pos, ObjectPos newPos) {
+        ObjectPos newEnemyPos = new ObjectPos();
+        newEnemyPos.boardPos = enemyPos.boardPos;
+        //newEnemyPos.boardRow = newEnemyPos.boardRow + getRowDirection(pos, newPos);
+        //newEnemyPos.boardCol = newEnemyPos.boardCol + getColDirection(pos, newPos);
+        newEnemyPos.boardRow = newPos.boardRow + getRowDirection(pos, newPos);
+        newEnemyPos.boardCol = newPos.boardCol + getColDirection(pos, newPos);
+
+        // check index out of bound
+        if (posOutOfBound(selectors, newEnemyPos)) {
+            return null;
+        }
+
+        return newEnemyPos;
+    }
+
     public static void pushStone(Selector[,,] selectors, ObjectPos pos, ObjectPos newPos) {
         // this function gets called after checking the validity of the move
 
         // no enemy stone found
-        if (numEnemyOnWay(selectors, pos, newPos) == 0) {
+        int numEnemyStones = numEnemyOnWay(selectors, pos, newPos);
+        if (numEnemyStones == 0) {
             return;
         }
 
+
+
         ObjectPos enemyPos = getEnemyPos(selectors, pos, newPos);
-        // 1) ref the enemy stone object
-        Stone temp = selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone;
-        //Destroy(selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone);
-        //selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone.destroy();
+        ObjectPos newEnemyPos = getNewEnemyPos(selectors, enemyPos, pos, newPos);
+        // if the enemy stone is pushed off
+        if (newEnemyPos == null) {
+            // ref the enemy stone object
+            Stone temp = selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone;
 
-        // 2) unattach the enemy stone from selector
+            // update Player's stone arr
+            if (temp.color == 0) {
+                // black player loses its stone
+                Board.blackPlayer.stones[enemyPos.boardPos] -= 1;
+
+            } else {
+                // white player loses its stone
+                Board.whitePlayer.stones[enemyPos.boardPos] -= 1;
+            }
+
+            // unattach the enemy stone from selector
+            selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone = null;
+
+            // destroy the enemy stone object
+            Destroy(temp.gameObject);
+            return;
+        }
+
+        // push the enemy stone to newEnemyPos
+        Vector3 newEnemySelectorPos = selectors[newEnemyPos.boardPos, newEnemyPos.boardRow, newEnemyPos.boardCol].transform.position;
+        selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone.transform.position = new Vector3(newEnemySelectorPos.x, newEnemySelectorPos.y, newEnemySelectorPos.z);
+        selectors[newEnemyPos.boardPos, newEnemyPos.boardRow, newEnemyPos.boardCol].stone = selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone;
         selectors[enemyPos.boardPos, enemyPos.boardRow, enemyPos.boardCol].stone = null;
-
-        // 3) destroy the enemy stone object
-        Destroy(temp.gameObject);
 
     }
 

@@ -30,13 +30,13 @@ public class Selector : MonoBehaviour {
             if (Board.turn == 0) {
                 // Black's passive move must be made from Board 3(2) or 4(3)
                 if (stonePos.boardPos == 0 || stonePos.boardPos == 1) {
-                    print("pasStone must be selected from your side.");
+                    print("Passive stone must be selected from your side.");
                     return;
                 }
             } else { // turn: 1; White's turn
                 // White's passive move must be made from Board 1(0) or 2(1)
                 if (stonePos.boardPos == 2 || stonePos.boardPos == 3) {
-                    print("pasStone must be selected from your side.");
+                    print("Passive stone must be selected from your side.");
                     return;
                 }
             }
@@ -54,7 +54,7 @@ public class Selector : MonoBehaviour {
             if (Custom.onSameBoard(pasStonePos, agrStonePos)) {
                 // Reset both stones to null
                 //Board.pasStone = null;
-                print("pasStone and agrStone are on the same board");
+                print("Aggressive stone must be selected from the different color of the board.");
                 return;
             }
 
@@ -63,7 +63,7 @@ public class Selector : MonoBehaviour {
                 (agrStonePos.boardPos == 1 && pasStonePos.boardPos == 2) ||
                 (agrStonePos.boardPos == 2 && pasStonePos.boardPos == 1) ||
                 (agrStonePos.boardPos == 3 && pasStonePos.boardPos == 0)) {
-                print("agrStone must be selected from the different color of the board.");
+                print("Aggressive stone must be selected from the different color of the board.");
                 return;
             }
 
@@ -84,27 +84,27 @@ public class Selector : MonoBehaviour {
             // If newPos and pasStonePos are on the same pos
             if(Custom.onSamePos(pasStonePos, newPos)){
                 Board.newPos = null;
-                print("pasStone and newPos");
+                print("You can't stay the same for the move.");
                 return;
             }
 
             // If newPos and agrStonePos are on the same pos
             if (Custom.onSamePos(agrStonePos, newPos)) {
                 Board.newPos = null;
-                print("agrStone and newPos");
+                print("You can't stay the same for the move.");
                 return;
             }
 
             // If newPos not on the same board with agrStone or pasStone
             if(!Custom.onSameBoard(pasStonePos, newPos) && !Custom.onSameBoard(agrStonePos, newPos)) {
                 Board.newPos = null;
-                print("newPos not on one of the stone's board");
+                print("The move must be made from one of your selected stone's board");
                 return;
             }
 
             // check if the move isn't valid
             if(!Custom.isValidMove(Board.selectors, pasStonePos, agrStonePos, newPos)) {
-                print("the move is not valid");
+                //print("INVALID MOVE: ");
                 Board.pasStone = null;
                 Board.agrStone = null;
                 Board.newPos = null;
@@ -154,14 +154,10 @@ public class Selector : MonoBehaviour {
 
             }
 
-            // reset the selections
-            Board.pasStone = null;
-            Board.agrStone = null;
-            Board.newPos = null;
             // CHANGE THE TURN
-            //Board.isBlackTurn = !(Board.isBlackTurn);
+            Board.changeTurn();
 
-            Custom.printSelectors(Board.selectors); // REMOVE THIS
+            //Custom.printSelectors(Board.selectors); // REMOVE THIS
         }
     }
 }

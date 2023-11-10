@@ -29,6 +29,6 @@ public class Stone : MonoBehaviour {
         //GameObject clickedStone = GameObject.Find("Transparent Pebble");
         //clickedStone.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
 }
