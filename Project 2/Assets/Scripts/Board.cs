@@ -246,17 +246,13 @@ public class Board : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (blackPlayer.hasNoStoneOnBoard()) {
-            print("White player won");
-
             // update UIManger
-            UIManager.result = "White player won!";
+            UIManager.result = "White won!";
             GameOver();
         }
         if (whitePlayer.hasNoStoneOnBoard()) {
-            print("Black player won");
-
             //update UIManager
-            UIManager.result = "Black player won!";
+            UIManager.result = "Black won!";
             GameOver();
         }
     }
