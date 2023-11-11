@@ -40,6 +40,10 @@ public class Selector : MonoBehaviour {
                     return;
                 }
             }
+
+            // lift up the stone
+            Custom.liftStone(this);
+
             Board.pasStone = this;
         } else if (Board.agrStone == null) {
             // agrStone selected
@@ -66,6 +70,9 @@ public class Selector : MonoBehaviour {
                 print("Aggressive stone must be selected from the different color of the board.");
                 return;
             }
+
+            // lift up the stone
+            Custom.liftStone(this);
 
             Board.agrStone = this;
         } else if (Board.newPos == null) { //EDIT THIS
@@ -104,16 +111,24 @@ public class Selector : MonoBehaviour {
 
             // check if the move isn't valid
             if(!Custom.isValidMove(Board.selectors, pasStonePos, agrStonePos, newPos)) {
-                //print("INVALID MOVE: ");
+                // drop the stones
+                Custom.dropStone(Board.pasStone);
+                Custom.dropStone(Board.agrStone);
+
                 Board.pasStone = null;
                 Board.agrStone = null;
                 Board.newPos = null;
                 return;
             }
 
+            // drop the stones
+            Custom.dropStone(Board.pasStone);
+            Custom.dropStone(Board.agrStone);
+
             // change the position of pasStone and agrStone
             if (newPos.boardPos == pasStonePos.boardPos) {
                 // newPos made from pasStone's board
+
                 // change pasStone's position
                 Vector3 pasSelectorPos = Board.selectors[newPos.boardPos, newPos.boardRow, newPos.boardCol].transform.position;
                 Board.pasStone.stone.transform.position = new Vector3(pasSelectorPos.x, pasSelectorPos.y, pasSelectorPos.z);
@@ -153,6 +168,7 @@ public class Selector : MonoBehaviour {
                 Board.selectors[pasStonePos.boardPos, pasStonePos.boardRow, pasStonePos.boardCol].stone = null;
 
             }
+
 
             // CHANGE THE TURN
             Board.changeTurn();

@@ -12,12 +12,16 @@ public class Board : MonoBehaviour {
     public static Vector3 pasPos, agrPos;
 
     public static Player blackPlayer, whitePlayer;
-    public static int turn = 0; // 0: black, 1: white
+    public static int turn; // 0: black, 1: white
+
+    public static GameObject mainCamera;
 
     // Start is called before the first frame update 
     void Start() {
+        turn = 0;
         blackPlayer = new Player();
         whitePlayer = new Player();
+        mainCamera = GameObject.Find("Main Camera");
         selectors = new Selector[4, 4, 4] {
             // Board 1 (Top-Right: from Black Player's viewpoint)
             {
@@ -268,12 +272,23 @@ public class Board : MonoBehaviour {
         newPos = null;
 
         // CHANGE THE TURN
-        turn += 1;
-        if (turn > 1) {
-            turn = 0;
-        }
+        if (turn == 0) {
+            // Black's turn is over
+            turn = 1;
 
-        // CHANGE THE CAMERA POSITION AND ROTATE
+            // CHANGE THE CAMERA POSITION AND ROTATE
+            mainCamera.transform.position = new Vector3(0.6f, 22, -18);
+            mainCamera.transform.rotation = Quaternion.Euler(121, 180, 180);
+
+        } else {
+            // White's turn is over
+            turn = 0;
+
+            // CHANGE THE CAMERA POSITION AND ROTATE
+            mainCamera.transform.position = new Vector3(0.6f, 22, 19);
+            mainCamera.transform.rotation = Quaternion.Euler(59, 180, 0);
+
+        }
 
     }
 }

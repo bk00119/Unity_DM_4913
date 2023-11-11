@@ -456,6 +456,24 @@ public class Custom : MonoBehaviour {
 
     }
 
+    public static void liftStone(Selector selector) {
+        // lift the stone up
+        selector.stone.transform.position = new Vector3(selector.stone.transform.position.x, 1.0f, selector.stone.transform.position.z);
+
+        // scale up the height of selector
+        selector.transform.localScale = new Vector3(selector.transform.localScale.x, 4.1f, selector.stone.transform.localScale.z);
+
+    }
+
+    public static void dropStone(Selector selector) {
+        // drop the stone
+        selector.stone.transform.position = new Vector3(selector.stone.transform.position.x, -0.21f, selector.stone.transform.position.z);
+
+        // scale down the height of selector
+        selector.transform.localScale = new Vector3(selector.transform.localScale.x, 2.1f, selector.stone.transform.localScale.z);
+
+    }
+
     public static void printSelectors(Selector[,,] selectors) {
         string arr = "";
         for (int i = 0; i < selectors.GetLength(0); i++) {
