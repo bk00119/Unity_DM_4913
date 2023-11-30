@@ -267,27 +267,29 @@ public class Board : MonoBehaviour {
         agrStone = null;
         newPos = null;
 
-        // CHANGE THE TURN
-        if (turn == 0) {
-            // Black's turn is over
-            //turn = 1;
+        CameraMovement.rotateCamera = true;
 
-            // CHANGE THE CAMERA POSITION AND ROTATE
-            //mainCamera.transform.position = new Vector3(0.6f, 22, -18);
-            //mainCamera.transform.rotation = Quaternion.Euler(121, 180, 180);
+        //// CHANGE THE TURN
+        //if (turn == 0) {
+        //    // Black's turn is over
+        //    //turn = 1;
 
-            CameraMovement.rotateCamera = true;
+        //    // CHANGE THE CAMERA POSITION AND ROTATE
+        //    //mainCamera.transform.position = new Vector3(0.6f, 22, -18);
+        //    //mainCamera.transform.rotation = Quaternion.Euler(121, 180, 180);
 
-        } else {
-            // White's turn is over
-            //turn = 0;
+        //    CameraMovement.rotateCamera = true;
 
-            //// CHANGE THE CAMERA POSITION AND ROTATE
-            //mainCamera.transform.position = new Vector3(0.6f, 22, 19);
-            //mainCamera.transform.rotation = Quaternion.Euler(59, 180, 0);
+        //} else {
+        //    // White's turn is over
+        //    //turn = 0;
 
-            CameraMovement.rotateCamera = true;
-        }
+        //    //// CHANGE THE CAMERA POSITION AND ROTATE
+        //    //mainCamera.transform.position = new Vector3(0.6f, 22, 19);
+        //    //mainCamera.transform.rotation = Quaternion.Euler(59, 180, 0);
+
+        //    CameraMovement.rotateCamera = true;
+        //}
 
     }
 }
