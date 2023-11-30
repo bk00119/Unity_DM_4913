@@ -17,8 +17,9 @@ public class Selector : MonoBehaviour {
 
     public void OnMouseDown() {
         // Order: Select pasStone --> agrStone --> newPos
+
         if (Board.pasStone == null) {
-            // pasStone selected
+            // Phase 1: pasStone selected
 
             // Check if blank selector or enemy's stone is selected
             if (stone == null || stone.color != Board.turn) {
@@ -46,6 +47,17 @@ public class Selector : MonoBehaviour {
 
             Board.pasStone = this;
         } else if (Board.agrStone == null) {
+            // Phase 2: pasStone is already selected
+
+            // if pasStone is reselected
+            if (Board.pasStone && Board.pasStone == this) {
+                // reselecting the stone will drop the stone
+                Custom.dropStone(Board.pasStone);
+                Board.pasStone = null;
+
+                return;
+            }
+
             // agrStone selected
             if (stone == null || stone.color != Board.turn) {
                 print("You must select your stone for an agressive move");
@@ -76,7 +88,16 @@ public class Selector : MonoBehaviour {
 
             Board.agrStone = this;
         } else if (Board.newPos == null) { //EDIT THIS
-            // newPos selected
+            // Phase 3: newPos selected
+
+            // if agrStone is reselected
+            if (Board.agrStone && Board.agrStone == this) {
+                // reselecting the stone will drop the stone
+                Custom.dropStone(Board.agrStone);
+                Board.agrStone = null;
+
+                return;
+            }
 
             Board.newPos = this;
         }
