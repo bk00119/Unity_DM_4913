@@ -20,10 +20,12 @@ public class Selector : MonoBehaviour {
 
         if (Board.pasStone == null) {
             // Phase 1: pasStone selected
+            //PlayError.Reset();
 
             // Check if blank selector or enemy's stone is selected
             if (stone == null || stone.color != Board.turn) {
-                print("You must select your stone for a passive move");
+                //print("You must select your stone for a passive move");
+                PlayError.SetPasOpponentSelectError();
                 return;
             }
 
@@ -31,21 +33,26 @@ public class Selector : MonoBehaviour {
             if (Board.turn == 0) {
                 // Black's passive move must be made from Board 3(2) or 4(3)
                 if (stonePos.boardPos == 0 || stonePos.boardPos == 1) {
-                    print("Passive stone must be selected from your side.");
+                    //print("Passive stone must be selected from your side.");
+                    PlayError.SetPasBoardSelectError();
                     return;
                 }
             } else { // turn: 1; White's turn
                 // White's passive move must be made from Board 1(0) or 2(1)
                 if (stonePos.boardPos == 2 || stonePos.boardPos == 3) {
-                    print("Passive stone must be selected from your side.");
+                    //print("Passive stone must be selected from your side.");
+                    PlayError.SetPasBoardSelectError();
                     return;
                 }
             }
 
             // lift up the stone
             Custom.liftStone(this);
-
             Board.pasStone = this;
+            //Instruction.message.text = Instruction.agrMsg;
+            Instruction.SetAgrMsg();
+            PlayError.Reset();
+
         } else if (Board.agrStone == null) {
             // Phase 2: pasStone is already selected
 
@@ -54,13 +61,14 @@ public class Selector : MonoBehaviour {
                 // reselecting the stone will drop the stone
                 Custom.dropStone(Board.pasStone);
                 Board.pasStone = null;
-
+                Instruction.SetPasMsg();
                 return;
             }
 
             // agrStone selected
             if (stone == null || stone.color != Board.turn) {
-                print("You must select your stone for an agressive move");
+                //print("You must select your stone for an agressive move");
+                PlayError.SetAgrOpponentSelectError();
                 return;
             }
 
@@ -70,7 +78,8 @@ public class Selector : MonoBehaviour {
             if (Custom.onSameBoard(pasStonePos, agrStonePos)) {
                 // Reset both stones to null
                 //Board.pasStone = null;
-                print("Aggressive stone must be selected from the different color of the board.");
+                //print("Aggressive stone must be selected from the different color of the board.");
+                PlayError.SetAgrBoardSelectError();
                 return;
             }
 
@@ -79,14 +88,17 @@ public class Selector : MonoBehaviour {
                 (agrStonePos.boardPos == 1 && pasStonePos.boardPos == 2) ||
                 (agrStonePos.boardPos == 2 && pasStonePos.boardPos == 1) ||
                 (agrStonePos.boardPos == 3 && pasStonePos.boardPos == 0)) {
-                print("Aggressive stone must be selected from the different color of the board.");
+                //print("Aggressive stone must be selected from the different color of the board.");
+                PlayError.SetAgrBoardSelectError();
                 return;
             }
 
             // lift up the stone
             Custom.liftStone(this);
-
             Board.agrStone = this;
+            Instruction.SetMovMsg();
+            PlayError.Reset();
+
         } else if (Board.newPos == null) { //EDIT THIS
             // Phase 3: newPos selected
 
@@ -95,7 +107,7 @@ public class Selector : MonoBehaviour {
                 // reselecting the stone will drop the stone
                 Custom.dropStone(Board.agrStone);
                 Board.agrStone = null;
-
+                Instruction.SetAgrMsg();
                 return;
             }
 
@@ -112,21 +124,24 @@ public class Selector : MonoBehaviour {
             // If newPos and pasStonePos are on the same pos
             if(Custom.onSamePos(pasStonePos, newPos)){
                 Board.newPos = null;
-                print("You can't stay the same for the move.");
+                //print("You can't stay the same for the move.");
+                PlayError.SetMovSamePosError();
                 return;
             }
 
             // If newPos and agrStonePos are on the same pos
             if (Custom.onSamePos(agrStonePos, newPos)) {
                 Board.newPos = null;
-                print("You can't stay the same for the move.");
+                //print("You can't stay the same for the move.");
+                PlayError.SetMovSamePosError();
                 return;
             }
 
             // If newPos not on the same board with agrStone or pasStone
             if(!Custom.onSameBoard(pasStonePos, newPos) && !Custom.onSameBoard(agrStonePos, newPos)) {
                 Board.newPos = null;
-                print("The move must be made from one of your selected stone's board");
+                //print("The move must be made from one of your selected stone's board");
+                PlayError.SetMovBoardError();
                 return;
             }
 
@@ -135,6 +150,7 @@ public class Selector : MonoBehaviour {
                 // drop the stones
                 Custom.dropStone(Board.pasStone);
                 Custom.dropStone(Board.agrStone);
+                Instruction.SetPasMsg();
 
                 Board.pasStone = null;
                 Board.agrStone = null;

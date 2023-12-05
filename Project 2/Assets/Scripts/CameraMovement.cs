@@ -25,7 +25,7 @@ public class CameraMovement : MonoBehaviour {
             // Update the elapsed time
             elapsedTime += Time.deltaTime;
 
-            if (Board.turn == 0) {
+            if (Board.turn == 1) {
                 // Black's turn is over
                 RotateAndMoveCamera(1, blackCamPos, whiteCamPos, blackCamRot, whiteCamRot);
 
@@ -56,7 +56,7 @@ public class CameraMovement : MonoBehaviour {
 
             rotateCamera = false;
 
-            Board.turn = newTurn;
+            //Board.turn = newTurn;
             elapsedTime = 0f;
         }
     }

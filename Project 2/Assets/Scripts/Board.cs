@@ -268,6 +268,13 @@ public class Board : MonoBehaviour {
         newPos = null;
 
         CameraMovement.rotateCamera = true;
+        if (turn == 0) {
+            turn = 1;
+        } else {
+            turn = 0;
+        }
+        Instruction.SetPasMsg();
+        PlayError.Reset();
 
         //// CHANGE THE TURN
         //if (turn == 0) {

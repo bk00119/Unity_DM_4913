@@ -53,13 +53,15 @@ public class Custom : MonoBehaviour {
     public static bool isMoveDistanceValid(int[] distance) {
         // max move is +/- 2 in any direction
         if (distance[0] > 2 || distance[1] > 2) {
-            print("Move must be less than 2");
+            //print("Move must be less than 2");
+            PlayError.SetMovOverTwoError();
             return false;
         }
 
         // the diagonal move be the same for row and col ex) up+2 and left+1 --> Invalid
         if ((distance[0] == 1 && distance[1] == 2) || (distance[0] == 2 && distance[1] == 1)) {
-            print("Diagonal move must have the same row move and col move");
+            //print("Diagonal move must have the same row move and col move");
+            PlayError.SetMovDiagonalError();
             return false;
         }
         return true;
@@ -68,19 +70,22 @@ public class Custom : MonoBehaviour {
     public static bool isPositionValid(Selector[,,] selectors, ObjectPos pos) {
         // board position is invalid
         if(pos.boardPos < 0 || pos.boardPos >= selectors.GetLength(0)) {
-            print("Board position is out of boud");
+            //print("Board position is out of boud");
+            PlayError.SetMovBoardPosOBError();
             return false;
         }
 
         // board row is invalid
         if(pos.boardRow < 0 || pos.boardRow >= selectors.GetLength(1)) {
-            print("Board row is out of bound");
+            //print("Board row is out of bound");
+            PlayError.SetMovBoardRowOBError();
             return false;
         }
 
         // board col is invalid
         if(pos.boardCol < 0 || pos.boardCol >= selectors.GetLength(2)) {
-            print("Board col is out of bound");
+            //print("Board col is out of bound");
+            PlayError.SetMovBoardColOBError();
             return false;
         }
 
@@ -230,7 +235,8 @@ public class Custom : MonoBehaviour {
     public static bool isValidPassiveMove(Selector[,,] selectors, ObjectPos pasPos, ObjectPos newPos) {
         // passive move can't push any stone
         if ((numAllyOnWay(selectors, pasPos, newPos) + numEnemyOnWay(selectors, pasPos, newPos)) > 0) {
-            print("Passive move can't push any stone");
+            //print("Passive move can't push any stone");
+            PlayError.SetMovPasPushError();
             return false;
         }
 
@@ -240,18 +246,21 @@ public class Custom : MonoBehaviour {
     public static bool isValidAggressiveMove(Selector[,,] selectors, ObjectPos agrPos, ObjectPos newPos) {
         // any allystone is between agrPos and newPos or on newPos
         if (numAllyOnWay(selectors, agrPos, newPos) > 0) {
-            print("Aggressive move can't push any ally stones");
+            //print("Aggressive move can't push any ally stones");
+            PlayError.SetMovAgrPushAllyError();
             return false;
         }
 
         // two enemy stones are on the way or on new Pos
         if (numEnemyOnWay(selectors, agrPos, newPos) > 1) {
-            print("Aggresive move can't push two enemy stones");
+            //print("Aggresive move can't push two enemy stones");
+            PlayError.SetMovAgrPushTwoError();
             return false;
         }
 
         // pushing two stones
         if (numEnemyOnWay(selectors, agrPos, newPos) > 0 && hasAStoneOnFurtherWay(selectors, agrPos, newPos)) {
+            PlayError.SetMovAgrPushTwoError();
             return false;
         }
 
@@ -311,7 +320,8 @@ public class Custom : MonoBehaviour {
 
         } else {
             // if the new move was made from the board where no stone is selected on
-            print("new move position is made from the board where no stone is selected on");
+            //print("new move position is made from the board where no stone is selected on");
+            PlayError.SetMovBoardWithNoStoneError();
             return false;
         }
         // every edgecase passed
