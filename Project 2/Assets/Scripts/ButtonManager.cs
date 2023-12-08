@@ -11,4 +11,8 @@ public class ButtonManager : MonoBehaviour {
     public void ToTitleMenuScene() {
         SceneManager.LoadScene(0);
     }
+
+    public void StartTutorialScene() {
+        SceneManager.LoadScene(3);
+    }
 }
