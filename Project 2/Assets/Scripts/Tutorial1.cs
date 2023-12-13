@@ -36,7 +36,6 @@ public class Tutorial1 : MonoBehaviour {
                 instructionText.text = "Black wins. Click on the screen to check the next tutorial";
             }
                 
-            //currTime = animationTime;
         }
         
     }

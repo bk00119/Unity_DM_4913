@@ -9,39 +9,37 @@ public class Tutorial3 : MonoBehaviour {
     public GameObject pasArrows, pasMovArrows, agrArrows, pasStone;
     float currTime;
     public float animationTime = 3f;
-    public float longAnimationTime = 5f;
-    bool isPasMoved, isAgrArrowsShowed, showLastInstruction, instructionOver;
+    bool isPasMoved, instructionOver, animationOver;
 
     // Start is called before the first frame update
     void Start() {
         currTime = animationTime;
-        //pasArrows.SetActive(false);
         pasMovArrows.SetActive(false);
         agrArrows.SetActive(false);
     }
 
     // Update is called once per frame
     void Update() {
-        if (instructionOver && Input.GetMouseButtonDown(0)) {
-            SceneManager.LoadScene(6);
+        if (animationOver) {
+            if (Input.GetMouseButtonDown(0)) {
+                if (instructionOver) {
+                    SceneManager.LoadScene(6);
+                } else {
+                    instructionText.text = "The aggressive move must be made in the same direction and number" +
+                        "\nof spaces as the passive move. Click on the screen to check the next tutorial.";
+                    instructionOver = true;
+                }
+            }
+            
+
         } else {
             currTime -= Time.deltaTime;
             if (currTime < 0) {
-                if (showLastInstruction) {
-                    instructionText.text = "Click on the screen to check the next tutorial";
-                    instructionOver = true;
-                } else if (isAgrArrowsShowed) {
-                    instructionText.text = "The aggressive move must be made in the same" +
-                        "\ndirection and number of spaces as the passive move";
-                    showLastInstruction = true;
-                    currTime = longAnimationTime;
-                } else if (isPasMoved) {
+                if (isPasMoved) {
                     agrArrows.SetActive(true);
-                    instructionText.text = "The aggressive stone must be selected" +
-                        "\nfrom any board with the opposite color";
-                    isAgrArrowsShowed = true;
-                    currTime = longAnimationTime;
-
+                    instructionText.text = "The aggressive stone must be selected from any board with the opposite color." +
+                        "\nClick on the screen to check the next step.";
+                    animationOver = true;
                 } else {
                     pasStone.transform.position = new Vector3(6.6f, -0.21f, 2.3f);
                     instructionText.text = "and moved...";

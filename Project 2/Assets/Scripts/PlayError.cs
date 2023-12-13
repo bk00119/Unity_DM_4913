@@ -6,20 +6,20 @@ using TMPro;
 public class PlayError : MonoBehaviour {
     static TextMeshProUGUI message;
     static string pasOpponentSelectError = "Error: You must select your stone for a passive move";
-    static string pasBoardSelectError = "Error: Passive stone must be selected from your side";
+    static string pasBoardSelectError = "Error: The passive stone must be selected from your side";
     static string agrOpponentSelectError = "Error: You must select your stone for an aggressive move";
-    static string agrBoardSelectError = "Error: Aggressive stone must be selected from the different color of the board";
+    static string agrBoardSelectError = "Error: The aggressive stone must be selected from the different color of the board";
     static string movSamePosError = "Error: Your stones must move";
     static string movBoardError = "Error: The move must be made from one of your selected stone's board";
-    static string movOverTwoError = "Error: Move must be less than 2";
-    static string movDiagonalError = "Error: Diagonal move must have the same row move and col move";
-    static string movBoardPosOBError = "Error: Board position is out of boud";
-    static string movBoardRowOBError = "Error: Board row is out of bound";
-    static string movBoardColOBError = "Error: Board col is out of bound";
-    static string movPasPushError = "Error: Passive move can't push any stone";
-    static string movAgrPushAllyError = "Error: Aggressive move can't push any ally stones";
-    static string movAgrPushTwoError = "Error: Aggresive move can't push two enemy stones";
-    static string movBoardWithNoStoneError = "Error: new move position is made from the board where no stone is selected on";
+    static string movOverTwoError = "Error: The move must be less than 2";
+    static string movDiagonalError = "Error: The diagonal move must have the same horizontal move and vertical move";
+    static string movBoardPosOBError = "Error: The stone position is out of bounds (Board)";
+    static string movBoardRowOBError = "Error: The stone position is out of bounds (Row)";
+    static string movBoardColOBError = "Error: The stone position is out of bounds (Column)";
+    static string movPasPushError = "Error: The passive stone can't push any stone";
+    static string movAgrPushAllyError = "Error: The aggressive stone can't push any ally stones";
+    static string movAgrPushTwoError = "Error: The aggresive stone can't push two enemy stones";
+    static string movBoardWithNoStoneError = "Error: The new move position is made from the board where no stone is selected on";
 
 
 
